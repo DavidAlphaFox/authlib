@@ -113,13 +113,13 @@ class AuthorizationServer(Hookable):
         :param func: a function to generate token
         """
         self._token_generators[grant_type] = func
-
+    #对客户端进行认证
     def authenticate_client(self, request, methods, endpoint="token"):
         """Authenticate client via HTTP request information with the given
         methods, such as ``client_secret_basic``, ``client_secret_post``.
         """
         if self._client_auth is None and self.query_client:
-            self._client_auth = ClientAuthentication(self.query_client)
+            self._client_auth = ClientAuthentication(self.query_client) #包装一个ClientAuthentication
         return self._client_auth(request, methods, endpoint)
 
     def register_client_auth_method(self, method, func):
@@ -267,7 +267,7 @@ class AuthorizationServer(Hookable):
             error.state = request.payload.state
             raise
         return grant
-
+    # 找到当前请求的token
     def get_token_grant(self, request):
         """Find the token grant for current request.
 
@@ -329,7 +329,7 @@ class AuthorizationServer(Hookable):
 
         grant.execute_hook("after_authorization_response", response)
         return response
-
+    # 创建token
     def create_token_response(self, request=None):
         """Validate token request and create token response.
 
@@ -353,8 +353,8 @@ class AuthorizationServer(Hookable):
 
 
 def _create_grant(grant_cls, extensions, request, server):
-    grant = grant_cls(request, server)
-    if extensions:
+    grant = grant_cls(request, server) #构建授权类
+    if extensions: #如果存在扩展，遍历扩展对grant进行修改
         for ext in extensions:
             ext(grant)
     return grant

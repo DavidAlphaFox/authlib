@@ -24,7 +24,7 @@ class FlaskOAuth2Payload(OAuth2Payload):
             values[k].extend(self.data.getlist(k))
         return values
 
-
+#使用flask的request构建OAuth2Request
 class FlaskOAuth2Request(OAuth2Request):
     def __init__(self, request: Request):
         super().__init__(

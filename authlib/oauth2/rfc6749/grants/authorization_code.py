@@ -210,13 +210,13 @@ class AuthorizationCodeGrant(BaseGrant, AuthorizationEndpointMixin, TokenEndpoin
         # check_token_endpoint
 
         # authenticate the client if client authentication is included
-        client = self.authenticate_token_endpoint_client()
+        client = self.authenticate_token_endpoint_client() #验证是有效的客户端
 
         log.debug("Validate token request of %r", client)
         if not client.check_grant_type(self.GRANT_TYPE):
             raise UnauthorizedClientError(
                 f"The client is not authorized to use 'grant_type={self.GRANT_TYPE}'"
-            )
+            ) #验证是有效的授权类型
 
         code = self.request.form.get("code")
         if code is None:

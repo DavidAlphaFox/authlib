@@ -38,9 +38,9 @@ class ClientAuthentication:
 
     def authenticate(self, request, methods, endpoint):
         for method in methods:
-            func = self._methods[method]
-            client = func(self.query_client, request)
-            if client and client.check_endpoint_auth_method(method, endpoint):
+            func = self._methods[method] #获得验证函数
+            client = func(self.query_client, request) #得到客户端
+            if client and client.check_endpoint_auth_method(method, endpoint): #客户端存在并得以验证了
                 request.auth_method = method
                 return client
 
@@ -52,18 +52,18 @@ class ClientAuthentication:
         raise InvalidClientError(
             description=f"The client cannot authenticate with methods: {methods}",
         )
-
+    # 进行调用
     def __call__(self, request, methods, endpoint="token"):
         return self.authenticate(request, methods, endpoint)
 
-
+## 使用header中的认证码进行认证
 def authenticate_client_secret_basic(query_client, request):
     """Authenticate client by ``client_secret_basic`` method. The client
     uses HTTP Basic for authentication.
     """
-    client_id, client_secret = extract_basic_authorization(request.headers)
+    client_id, client_secret = extract_basic_authorization(request.headers) #获得ClientID和ClientSecret
     if client_id and client_secret:
-        client = _validate_client(query_client, client_id, 401)
+        client = _validate_client(query_client, client_id, 401) #找不到的时候返回401
         if client.check_client_secret(client_secret):
             log.debug(f'Authenticate {client_id} via "client_secret_basic" success')
             return client
@@ -104,7 +104,7 @@ def _validate_client(query_client, client_id, status_code=400):
             description="Missing 'client_id' parameter.",
         )
 
-    client = query_client(client_id)
+    client = query_client(client_id) ## 查找对应的Client
     if not client:
         raise InvalidClientError(
             status_code=status_code,

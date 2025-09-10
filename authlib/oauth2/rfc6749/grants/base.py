@@ -97,7 +97,7 @@ class TokenEndpointMixin:
         return (
             request.payload.grant_type == cls.GRANT_TYPE
             and request.method in cls.TOKEN_ENDPOINT_HTTP_METHODS
-        )
+        ) #检查HTTP请求方法和授权类型是否相同
 
     def validate_token_request(self):
         raise NotImplementedError()
