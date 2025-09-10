@@ -241,7 +241,7 @@ class AuthorizationCodeGrant(BaseGrant, AuthorizationEndpointMixin, TokenEndpoin
         self.request.authorization_code = authorization_code
 
     @hooked
-    def create_token_response(self):
+    def create_token_response(self): #创建一个Token响应
         """If the access token request is valid and authorized, the
         authorization server issues an access token and optional refresh
         token as described in Section 5.1.  If the request client
@@ -282,7 +282,7 @@ class AuthorizationCodeGrant(BaseGrant, AuthorizationEndpointMixin, TokenEndpoin
             user=user,
             scope=scope,
             include_refresh_token=client.check_grant_type("refresh_token"),
-        )
+        ) ## 创建Token
         log.debug("Issue token %r to %r", token, client)
 
         self.save_token(token)

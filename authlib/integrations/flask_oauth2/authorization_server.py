@@ -89,7 +89,7 @@ class AuthorizationServer(_AuthorizationServer):
             client_authenticated.send(self, *args, **kwargs)
         elif name == "after_revoke_token":
             token_revoked.send(self, *args, **kwargs)
-
+    #默认的Token生成器
     def create_bearer_token_generator(self, config):
         """Create a generator function for generating ``token`` value. This
         method will create a Bearer Token generator with

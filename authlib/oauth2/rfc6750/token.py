@@ -55,7 +55,7 @@ class BearerTokenGenerator:
         if scope:
             scope = client.get_allowed_scope(scope)
         return scope
-
+    #默认真正生成Token的代码
     def generate(
         self,
         grant_type,
